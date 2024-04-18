@@ -8,6 +8,7 @@ require_relative 'board_case'
 class Game
 
   def initialize
+
     @player1 = Player.new
     @player2 = Player.new
     @b = Board.new
@@ -16,7 +17,7 @@ class Game
   
   def rounds
     until @player1.statu == "winner" || @player2.statu == "winner" do
-        puts "#{@player1.name}, veuillez entrer les coordonnées de la case sur laquelle vous voulez poser  votre x:"
+        puts "\e[33m#{@player1.name}\e[0m, veuillez entrer les coordonnées de la case sur laquelle vous voulez poser votre x:"
         print "> " 
         input = gets.chomp.downcase
         verify_if_the_input_is_valid_or_not(input)
@@ -41,8 +42,8 @@ class Game
           @b.c3.put_x
         end
         @b.envoi_info_to_view
-        break if verify_if_the_player_is_the_winner_or_not == true
-        puts "#{@player2.name}, veuillez entrer les coordonnées de la case sur laquelle vous voulez poser votre o:"
+        break if verify_if_the_player_is_the_winner_or_not(@player1.name) == true
+        puts "\e[34m#{@player2.name}\e[0m, veuillez entrer les coordonnées de la case sur laquelle vous voulez poser votre o:"
         print "> "
         input = gets.chomp.downcase
         verify_if_the_input_is_valid_or_not(input)
@@ -67,17 +68,17 @@ class Game
           @b.c3.put_o
         end
         @b.envoi_info_to_view
-        break if verify_if_the_player_is_the_winner_or_not == true
+        break if verify_if_the_player_is_the_winner_or_not(@player2.name) == true
     end
   end
 
-  def verify_if_the_player_is_the_winner_or_not
+  def verify_if_the_player_is_the_winner_or_not(the_name)
     if (@b.a1.state == @b.a2.state && @b.a2.state == @b.a3.state && @b.a3.state != " " ) || (@b.b1.state == @b.b2.state && @b.b2.state == @b.b3.state && @b.b3.state != " ") || (@b.c1.state == @b.c2.state && @b.c2.state == @b.c3.state && @b.c3.state != " ") || (@b.a1.state == @b.b1.state && @b.b1.state == @b.c1.state && @b.c1.state != " ") || (@b.a2.state == @b.b2.state && @b.b2.state == @b.c2.state && @b.c2.state != " ") || (@b.a3.state == @b.b3.state && @b.b3.state == @b.c3.state && @b.c3.state != " ") || (@b.a1.state == @b.b2.state && @b.b2.state == @b.c3.state && @b.c3.state != " ") || (@b.a3.state == @b.b2.state && @b.b2.state == @b.c1.state&& @b.c1.state != " ") 
-      puts "VOUS AVEZ GAGNE!!"
+      puts "\e[32m#{the_name}, VOUS AVEZ GAGNE!!\e[0m"
       return true
       
     elsif @b.a1.state != " " && @b.a2.state != " " && @b.a3.state != " " && @b.b1.state != " " && @b.b2.state != " " && @b.b3.state != " " && @b.c1.state != " " && @b.c2.state != " " && @b.c3.state != " " 
-      puts "EGALITE!"
+      puts "\e[33mEGALITE!\e[0m"
       puts ""
       return true
     end
@@ -85,7 +86,7 @@ class Game
 
   def verify_if_the_input_is_valid_or_not(input)
     if input != "a1" && input != "b1" && input != "c1" && input != "a2" && input != "b2" && input != "c2" && input != "a3" && input != "b3" && input != "c3"
-      puts "Merci de taper une coordonnée valide pour jouer. La punission pour avoir taper n'importe quoi est que vous passez votre tour."
+      puts "\e[31mGreat Succes!! La punission pour avoir taper n'importe quoi est que vous passez votre tour.\e[0m"
     end
   end
 end
